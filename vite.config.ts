@@ -19,7 +19,7 @@ const isDev = process.env.__DEV__ === "true";
 const extensionManifest = {
   ...manifest,
   ...(isDev ? devManifest : ({} as ManifestV3Export)),
-  name: isDev ? `DEV: ${manifest.name}` : manifest.name,
+  name: `${isDev ? "🔧 " : ""}${manifest.name}`,
   version: pkg.version,
 };
 
@@ -32,7 +32,8 @@ function stripDevIcons(apply: boolean) {
     resolveId(source: string) {
       return source === "virtual-module" ? source : null;
     },
-    renderStart(outputOptions: any, inputOptions: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    renderStart(outputOptions: any) {
       const outDir = outputOptions.dir;
       fs.rm(resolve(outDir, "dev-icon-32.png"), () =>
         console.log(`Deleted dev-icon-32.png frm prod build`)
