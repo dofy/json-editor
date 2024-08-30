@@ -1,11 +1,11 @@
 {
-  "name": "vite-web-extension",
+  "name": "json-editor",
   "version": "1.2.0",
   "description": "A simple chrome extension template with Vite, React, TypeScript and Tailwind CSS.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JohnBra/web-extension.git"
+    "url": "https://github.com/dofy/json-editor"
   },
   "scripts": {
     "build": "vite build",

@@ -1,10 +1,10 @@
-import React from 'react';
-import logo from '@assets/img/logo.svg';
-import '@pages/newtab/Newtab.css';
+import logo from "@assets/img/logo.svg";
+import "@pages/newtab/Newtab.css";
 
 export default function Newtab(): JSX.Element {
   return (
     <div className="App">
+      <div className="">test</div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
