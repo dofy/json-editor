@@ -1,28 +1,36 @@
-import React from "react";
-import logo from "@assets/img/logo.svg";
+import { getPureUrl } from "@src/utils";
+import { FC, useEffect, useState } from "react";
 
-export default function Popup(): JSX.Element {
+const Popup: FC = () => {
+  const [pageKey, setPageKey] = useState<string | null>(null);
+  const [options, setOptions] = useState<{ container: string } | null>(null);
+
+  useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const optionsKey = getPureUrl(tabs[0].url!);
+      setPageKey(optionsKey);
+
+      chrome.runtime.sendMessage(
+        { type: "get/options", optionsKey },
+        ({ data }) => {
+          setOptions(data);
+        }
+      );
+    });
+  }, []);
+
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 text-center h-full p-3 bg-gray-800">
-      <header className="flex flex-col items-center justify-center text-white">
-        <img
-          src={logo}
-          className="h-36 pointer-events-none animate-spin-slow"
-          alt="logo"
-        />
-        <p>
-          Edit <code>src/pages/popup/Popup.jsx</code> and save to reload.
-        </p>
-        <a
-          className="text-blue-400"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
-        <p>Popup styled with TailwindCSS!</p>
-      </header>
-    </div>
+    <main className="min-w-[420px] p-2 bg-gray-100 ">
+      <h3 className="text-2xl font-bold underline-offset-2">
+        Options about current site
+      </h3>
+      <div className="flex gap-2 text-lg">
+        <h4 className="font-bold">Page Key:</h4>
+        <span>{pageKey}</span>
+      </div>
+      <pre>{JSON.stringify(options, null, 2)}</pre>
+    </main>
   );
-}
+};
+
+export default Popup;

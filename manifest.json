@@ -27,7 +27,7 @@
   "permissions": ["activeTab", "sidePanel", "storage"],
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
+      "matches": ["http://*/*", "https://*/*"],
       "js": ["src/pages/content/index.tsx"],
       "css": ["contentStyle.css"]
     }

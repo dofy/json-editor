@@ -1,23 +1,31 @@
-console.log("background script loaded");
+import { getPureUrl } from "@src/utils";
 
-chrome.runtime.onInstalled.addListener(() => {
-  console.log("onInstalled");
-});
+chrome.runtime.onInstalled.addListener(() => {});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("onMessage", message, sender);
+  const optionsKey = message.optionsKey || getPureUrl(sender.url!);
   switch (message.type) {
-    case "get/options":
-      sendResponse({
-        type: "options",
-        options: {
-          container: ".logo",
-          // container: ".hero-text",
-        },
+    case "get/options": {
+      chrome.storage.sync.get(optionsKey, (result) => {
+        sendResponse({
+          optionsKey,
+          data: result[optionsKey]?.data || {},
+        });
       });
       break;
+    }
+    case "set/options": {
+      chrome.storage.sync.set({ [optionsKey]: { data: message.data } }, () => {
+        sendResponse({ optionsKey, data: message.data });
+      });
+      break;
+    }
+    case "system/log":
+      console.log("<system/log>", ...message.msgs);
+      break;
     default:
-      console.error("unknown message type", message);
+      console.log("Unknown Message Type:", message.type);
+      break;
   }
   return true;
 });
