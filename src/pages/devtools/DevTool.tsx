@@ -1,5 +1,9 @@
 import "./DevTool.css";
 
 export const DevTool = () => {
-  return <div className="text-2xl">xxx</div>;
+  return (
+    <main className="flex justify-center p-4">
+      <div className="text-2xl text-orange-700">JSON Editor DevTool</div>
+    </main>
+  );
 };

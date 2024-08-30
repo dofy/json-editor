@@ -1,10 +1,11 @@
-import React from "react";
 import "@pages/panel/Panel.css";
 
-export default function Panel(): JSX.Element {
+const Panel = (): JSX.Element => {
   return (
-    <div className="container">
-      <h1>Dev Tools Panel</h1>
-    </div>
+    <main className="p-2">
+      <h1 className="text-xl text-green-500">Dev Tools Panel</h1>
+    </main>
   );
-}
+};
+
+export default Panel;

@@ -17,7 +17,9 @@ const addContent = (containerSelector: string) => {
   if (!rootContainer) throw new Error("Can't find Content root element");
   const root = createRoot(rootContainer);
   root.render(
-    <div className="text-lg text-black bg-amber-400">content script loaded</div>
+    <div className="suse text-2xl font-bold text-black bg-amber-400 rounded-full">
+      JSON Editor Content
+    </div>
   );
 };
 
@@ -25,7 +27,6 @@ chrome.runtime.sendMessage(
   { type: "get/options" },
   ({ options }: { options: Record<string, string> }) => {
     const { container: containerSelector } = options;
-    console.log("🚀 ~ containerSelector:", containerSelector);
     addContent(containerSelector);
   }
 );

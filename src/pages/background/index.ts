@@ -11,7 +11,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({
         type: "options",
         options: {
-          container: ".hero-text",
+          container: ".logo",
+          // container: ".hero-text",
         },
       });
       break;
