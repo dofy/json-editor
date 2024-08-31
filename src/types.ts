@@ -1,3 +1,3 @@
 export type PageOptions = {
-  container: string;
+  selector: string;
 };

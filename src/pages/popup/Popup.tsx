@@ -1,7 +1,7 @@
+import { PageOptions } from "@src/types";
 import { getPureUrl } from "@src/utils";
 import { FC, useEffect, useState } from "react";
 import { OptionEditor } from "./OptionEditor";
-import { PageOptions } from "@src/types";
 
 const Popup: FC = () => {
   const [pageKey, setPageKey] = useState<string>();
@@ -9,11 +9,11 @@ const Popup: FC = () => {
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const optionsKey = getPureUrl(tabs[0].url!);
-      setPageKey(optionsKey);
+      const pageKey = getPureUrl(tabs[0].url!);
+      setPageKey(pageKey);
 
       chrome.runtime.sendMessage(
-        { type: "get/options", optionsKey },
+        { type: "get/options", pageKey },
         ({ data }) => {
           setOptions(data);
         }
@@ -31,7 +31,7 @@ const Popup: FC = () => {
           <h4 className="font-bold">Page Key:</h4>
           <span className="text-blue-500">{pageKey}</span>
         </div>
-        <OptionEditor optionsKey={pageKey!} options={options!} />
+        <OptionEditor pageKey={pageKey!} options={options!} />
       </div>
     </main>
   );

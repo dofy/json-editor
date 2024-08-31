@@ -3,20 +3,20 @@ import { getPureUrl } from "@src/utils";
 chrome.runtime.onInstalled.addListener(() => {});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  const optionsKey = message.optionsKey || getPureUrl(sender.url!);
+  const pageKey = message.pageKey || getPureUrl(sender.url!);
   switch (message.type) {
     case "get/options": {
-      chrome.storage.sync.get(optionsKey, (result) => {
+      chrome.storage.sync.get(pageKey, (result) => {
         sendResponse({
-          optionsKey,
-          data: result[optionsKey]?.data || {},
+          pageKey,
+          data: result[pageKey]?.data || {},
         });
       });
       break;
     }
     case "set/options": {
-      chrome.storage.sync.set({ [optionsKey]: { data: message.data } }, () => {
-        sendResponse({ optionsKey, data: message.data });
+      chrome.storage.sync.set({ [pageKey]: { data: message.data } }, () => {
+        sendResponse({ pageKey, data: message.data });
       });
       break;
     }

@@ -2,32 +2,41 @@ import { PageOptions } from "@src/types";
 import { useEffect, useState } from "react";
 
 interface OptionEditorProps {
-  optionsKey: string;
+  pageKey: string;
   options: PageOptions;
 }
 
 export const OptionEditor: React.FC<OptionEditorProps> = ({
-  optionsKey,
+  pageKey,
   options,
 }) => {
   const [isChanged, setIsChanged] = useState(false);
+  const [buttonText, setButtonText] = useState<string>("Save");
   const [currentOptions, setCurrentOptions] = useState<PageOptions>(options);
 
   useEffect(() => {
     setCurrentOptions(options);
   }, [options]);
 
-  const updateOptions = (container: string) => {
+  const updateOptions = (selector: string) => {
     setIsChanged(true);
-    setCurrentOptions({ container });
+    setCurrentOptions({ selector });
   };
 
   const onSave = () => {
+    // Save the current options to the storage
     chrome.runtime.sendMessage({
       type: "set/options",
-      optionsKey,
+      pageKey,
       data: currentOptions,
     });
+
+    setIsChanged(false);
+    setButtonText("Saved!");
+
+    setTimeout(() => {
+      setButtonText("Save");
+    }, 1000);
   };
 
   return (
@@ -38,7 +47,7 @@ export const OptionEditor: React.FC<OptionEditorProps> = ({
       <input
         id="container"
         className="border border-gray-300 rounded-md px-2 py-1"
-        value={currentOptions?.container}
+        value={currentOptions?.selector}
         onChange={(evt) => updateOptions(evt.target.value)}
       ></input>
       <button
@@ -46,7 +55,7 @@ export const OptionEditor: React.FC<OptionEditorProps> = ({
         onClick={onSave}
         disabled={!isChanged}
       >
-        Save
+        {buttonText}
       </button>
     </div>
   );
